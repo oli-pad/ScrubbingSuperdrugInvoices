@@ -7,5 +7,4 @@ def ConvertPDFtoText(file):
         for page in pdf.pages:
             text=page.extract_text()
             pdf_text+=text
-            print('oli')
     return pdf_text

@@ -143,3 +143,9 @@ class SuperdrugInvoiceDetail:
             df2=pd.DataFrame([Invoice_Details[i]],columns=Line._fields)
             df=pd.concat([df,df2])
         return df
+
+    def Company(self):
+        for line in self.lines:
+            if re.search('SAVERS HEALTH AND BEAUTY',line):
+                return 'SAVERS'
+            

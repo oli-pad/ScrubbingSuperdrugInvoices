@@ -27,6 +27,8 @@ class SuperdrugInvoiceDetail:
             return 'PR'
         elif self.Deal_Type() =='INVOICE':
             return 'MS'
+        elif self.Deal_Type() =='CREDIT MEMO':
+            return 'CM'
     
     def Unit_Funding_Type(self):
         if self.SAL_Invoice_type() == 'PR':
@@ -42,7 +44,7 @@ class SuperdrugInvoiceDetail:
                 if re.search('(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})',line):
                     Line_Description.append(re.search('(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})',line).group(3))
             return Line_Description
-        elif self.SAL_Invoice_type() == 'MS':
+        elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             for line in self.lines:
                 if re.search('^Description Amount [(]GBP[)]$',line):
                         AP_status=True
@@ -63,7 +65,7 @@ class SuperdrugInvoiceDetail:
             if self.SAL_Invoice_type() == 'PR':
                 if re.search('INVOICE(\s?):(\s?)(\d+)',line):
                     return re.search('INVOICE(\s?):(\s?)(\d+)',line).group(3)
-            elif self.SAL_Invoice_type() == 'MS':
+            elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
                 if re.search('Document Number :(\s?)(\d+)',line):
                     return re.search('Document Number :(\s?)(\d+)',line).group(2)
 
@@ -72,7 +74,7 @@ class SuperdrugInvoiceDetail:
             if self.SAL_Invoice_type() == 'PR':
                 if re.search('INVOICE DATE(\s?):(\s?)(\d{2})[-](.*)[-](\d{2})',line):
                     return re.search('INVOICE DATE(\s?):(\s?)(\d{2})[-](.*)[-](\d{2})',line).group(3)+'/'+Months[re.search('INVOICE DATE(\s?):(\s?)(\d{2})[-](.*)[-](\d{2})',line).group(4)]+'/20'+re.search('INVOICE DATE(\s?):(\s?)(\d{2})[-](.*)[-](\d{2})',line).group(5)
-            elif self.SAL_Invoice_type() == 'MS':
+            elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
                 if re.search('Invoice Date :(\s?)(\d{2})[-](.*)[-](\d{2})',line):
                     return re.search('Invoice Date :(\s?)(\d{2})[-](.*)[-](\d{2})',line).group(2)+'/'+Months[re.search('Invoice Date :(\s?)(\d{2})[-](.*)[-](\d{2})',line).group(3)]+'/20'+re.search('Invoice Date :(\s?)(\d{2})[-](.*)[-](\d{2})',line).group(4)    
 
@@ -81,7 +83,7 @@ class SuperdrugInvoiceDetail:
             if self.SAL_Invoice_type() == 'PR':    
                 if re.search('/Event ID (\d+) /',line):
                     return re.search('/Event ID (\d+) /',line).group(1)
-            elif self.SAL_Invoice_type() == 'MS':
+            elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
                 return ''
     
     def Product_No(self):
@@ -91,7 +93,7 @@ class SuperdrugInvoiceDetail:
                 if re.search('(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})',line):
                     Product_No.append(re.search('(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})',line).group(1))
             return Product_No
-        elif self.SAL_Invoice_type() == 'MS':
+        elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             return ['']
 
     def Start_Date(self):
@@ -99,7 +101,7 @@ class SuperdrugInvoiceDetail:
             if self.SAL_Invoice_type() == 'PR':
                 if re.search('For Invoice Create Date(\s?)(\d{2})/(\d{2})/(\d{4})(\s?)To(\s?)(\d{2})/(\d{2})/(\d{4})',line):
                     return re.search('For Invoice Create Date(\s?)(\d{2})/(\d{2})/(\d{4})(\s?)To(\s?)(\d{2})/(\d{2})/(\d{4})',line).group(2)+'/'+re.search('For Invoice Create Date(\s?)(\d{2})/(\d{2})/(\d{4})(\s?)To(\s?)(\d{2})/(\d{2})/(\d{4})',line).group(3)+'/'+re.search('For Invoice Create Date(\s?)(\d{2})/(\d{2})/(\d{4})(\s?)To(\s?)(\d{2})/(\d{2})/(\d{4})',line).group(4)
-            elif self.SAL_Invoice_type() == 'MS':
+            elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
                 return self.Invoice_Date()
 
     def End_Date(self):
@@ -107,7 +109,7 @@ class SuperdrugInvoiceDetail:
             if self.SAL_Invoice_type() == 'PR':
                 if re.search('For Invoice Create Date(\s?)(\d{2})/(\d{2})/(\d{4})(\s?)To(\s?)(\d{2})/(\d{2})/(\d{4})',line):
                     return re.search('For Invoice Create Date(\s?)(\d{2})/(\d{2})/(\d{4})(\s?)To(\s?)(\d{2})/(\d{2})/(\d{4})',line).group(7)+'/'+re.search('For Invoice Create Date(\s?)(\d{2})/(\d{2})/(\d{4})(\s?)To(\s?)(\d{2})/(\d{2})/(\d{4})',line).group(8)+'/'+re.search('For Invoice Create Date(\s?)(\d{2})/(\d{2})/(\d{4})(\s?)To(\s?)(\d{2})/(\d{2})/(\d{4})',line).group(9)
-            elif self.SAL_Invoice_type() == 'MS':
+            elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
                 return self.Invoice_Date()
 
     def Quantity(self):
@@ -126,7 +128,7 @@ class SuperdrugInvoiceDetail:
                     subtotal=0
                     Quantity_status=False             
             return Quantity
-        elif self.SAL_Invoice_type() == 'MS':
+        elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             return ['']
     
     def Unit_Price(self):
@@ -136,21 +138,21 @@ class SuperdrugInvoiceDetail:
                 if re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)(\d+)(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line):
                     Unit_Price.append(re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)(\d+)(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line).group(13))
             return Unit_Price
-        elif self.SAL_Invoice_type() == 'MS':
+        elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             return ['']
     
     def Net_Amount(self):
         if self.SAL_Invoice_type() == 'PR':
             Net_Amount=[float(i)*float(j) for i,j in zip(self.Quantity(),self.Unit_Price())]
             return Net_Amount
-        elif self.SAL_Invoice_type() == 'MS':
+        elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             Net_Amount=[]
             AP_status=False
             for line in self.lines:
                 if re.search('^Description Amount [(]GBP[)]$',line):
                         AP_status=True
-                elif AP_status and re.search('^(.*) [£] ([0-9.,]*)$',line):
-                    Net_Amount.append(re.search('^(.*) [£] ([0-9.,]*)$',line).group(2).replace(',',''))
+                elif AP_status and re.search('^(.*) [£] ([0-9.,-]*)$',line):
+                    Net_Amount.append(re.search('^(.*) [£] ([0-9.,-]*)$',line).group(2).replace(',',''))
                     AP_status=False
             return Net_Amount
     
@@ -164,11 +166,11 @@ class SuperdrugInvoiceDetail:
                     VAT_Rate = float(re.search('(.*) ([0-9,.]*) ([0-9,.]*) ([0-9,.]*)',line).group(3))/100
                     VAT_Amount = [float(i)*VAT_Rate for i in self.Net_Amount()]
                     return VAT_Amount
-        elif self.SAL_Invoice_type() == 'MS':
+        elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             VAT_Amount=[]
             for line in self.lines:
-                if re.search('^VAT ([0-9]*)% [£] ([0-9,.]*)$',line):
-                    VAT_Amount.append(re.search('^VAT ([0-9]*)% [£] ([0-9,.]*)$',line).group(2).replace(',',''))
+                if re.search('^VAT ([0-9]*)% [£] ([0-9,.-]*)$',line):
+                    VAT_Amount.append(re.search('^VAT ([0-9]*)% [£] ([0-9,.-]*)$',line).group(2).replace(',',''))
             return VAT_Amount
     
     def Gross_Amount(self):
@@ -182,7 +184,7 @@ class SuperdrugInvoiceDetail:
                 if re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)(\d+)(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line):
                     Store_Format.append(re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)(\d+)(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line).group(15))
             return Store_Format
-        elif self.SAL_Invoice_type() == 'MS':
+        elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             return ['']
     
     def Invoice_Description(self):

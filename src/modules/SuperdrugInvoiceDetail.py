@@ -120,16 +120,15 @@ class SuperdrugInvoiceDetail:
         Quantity_status=False
         if self.SAL_Invoice_type() == 'PR':
             for line in self.lines:
-                if re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line):
+                if re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,-]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line):
                     Quantity_status=True
-                    subtotal += float(re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line).group(9).replace(',',''))
-                elif Quantity_status and re.search('^(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.*,.]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.*,]*)$',line):
-                    subtotal += float(re.search('^(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9*.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9*.,]*)$',line).group(5).replace(',',''))
-                elif Quantity_status and re.search('^Item total ',line):
+                    subtotal += float(re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,-]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line).group(9).replace(',',''))
+                elif Quantity_status and re.search('^(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9*.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.*,]*)$',line):
+                    subtotal += float(re.search('^(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9*.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.*,]*)$',line).group(5).replace(',',''))
+                elif Quantity_status and re.search('^Item [tT]otal ',line):
                     Quantity.append(subtotal)
                     subtotal=0
-                    Quantity_status=False    
-            print(Quantity)         
+                    Quantity_status=False
             return Quantity
         elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             return ['']
@@ -140,6 +139,7 @@ class SuperdrugInvoiceDetail:
             for line in self.lines:
                 if re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,-]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line):
                     Unit_Price.append(re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,-]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line).group(13))
+            print(Unit_Price)
             return Unit_Price
         elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             return ['']
@@ -187,8 +187,8 @@ class SuperdrugInvoiceDetail:
         Store_Format=[]
         if self.SAL_Invoice_type() == 'PR':
             for line in self.lines:
-                if re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)(\d+)(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line):
-                    Store_Format.append(re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)(\d+)(\s)([0-9.,]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line).group(15))
+                if re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,-]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line):
+                    Store_Format.append(re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,-]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line).group(15))
             return Store_Format
         elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             return ['']

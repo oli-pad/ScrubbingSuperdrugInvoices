@@ -139,7 +139,7 @@ class SuperdrugInvoiceDetail:
             for line in self.lines:
                 if re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,-]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line):
                     Unit_Price.append(re.search('^(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})(\s)([0-9.,]*)(\s)([0-9.,-]*)(\s)([0-9.,]*)(\s)(.*)(\s)([0-9.,]*)$',line).group(13))
-            print(Unit_Price)
+            
             return Unit_Price
         elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
             return ['']

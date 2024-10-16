@@ -35,32 +35,19 @@ class SuperdrugInvoiceDetail:
             return 'E'
         else:
             return ''
-    
+
     def Line_Description(self):
         Line_Description=[]
-        AP_status=False
         if self.SAL_Invoice_type() == 'PR':
             for line in self.lines:
-                if re.search('^(\d{5,7})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})',line):
-                    Line_Description.append(re.search('^(\d{5,7})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})',line).group(3))
+                if re.search('(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})',line):
+                    Line_Description.append(re.search('(\d{6})(\s)(.*)(\s)(\d{2})[/](\d{2})[/](\d{4})',line).group(3))
             return Line_Description
-        elif self.SAL_Invoice_type() == 'MS' or self.SAL_Invoice_type() == 'CM':
-            for line in self.lines:
-                if re.search('^Description Amount [(]GBP[)]$',line):
-                    AP_status=True
-                elif AP_status and re.search('^(.*) [£] ([0-9.,-]*)$',line):
-                    if re.search('^VAT ([0-9]*)% [£] ([0-9,.-]*)$',line):
-                        AP_status=False
-                    else:
-                        Line_Description.append(re.search('^(.*) [£] ([0-9.,-]*)$',line).group(1))
-            return Line_Description
-              
+        
     def Deal_Type(self):
         for line in self.lines:
             if re.search('REASON(\s?):(\s?)(.*)',line):
                 return re.search('REASON(\s?):(\s?)(.*)',line).group(3)
-            elif re.search('Document Type(\s?):(\s?)(.*)',line):
-                return re.search('Document Type(\s?):(\s?)(.*)',line).group(3)
 
     def Invoice_No(self):
         for line in self.lines:

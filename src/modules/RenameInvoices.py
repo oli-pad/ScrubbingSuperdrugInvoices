@@ -13,7 +13,7 @@ def RenameInvoices(directory):
             pass
         if instance.Company() == "SAVERS":
             try:
-                os.rename(os.path.join(directory,file),os.path.join("W:\Audit\Loreal\Invoice Images\EmailStagingBay\Savers",file))
+                os.rename(os.path.join(directory,file),os.path.join("W:\Audit\Coty\Invoice Images\EmailStagingBay\Savers",file))
             except:
                 os.remove(os.path.join(directory,file))
         else:
@@ -24,11 +24,11 @@ def RenameInvoices(directory):
             print(file)
             print(Invoice_No)
             if Invoice_No != 'Unknown' and Invoice_No != None:
-                shutil.copy(os.path.join(directory,file),os.path.join("W:\Audit\Loreal\Invoice Images",Invoice_No+'.pdf'))
+                shutil.copy(os.path.join(directory,file),os.path.join("W:\Audit\Coty\Invoice Images",Invoice_No+'.pdf'))
                 try:
-                    os.rename(os.path.join(directory,file),os.path.join("W:\Audit\Loreal\Invoice Images\ImageStagingBay\Superdrug",Invoice_No+'.pdf'))
+                    os.rename(os.path.join(directory,file),os.path.join("W:\Audit\Coty\Invoice Images\ImageStagingBay\Superdrug",Invoice_No+'.pdf'))
                 except:
                     try:
-                        os.replace(os.path.join(directory,file),os.path.join("W:\Audit\Loreal\Invoice Images\ImageStagingBay\Superdrug",Invoice_No+'.pdf'))
+                        os.replace(os.path.join(directory,file),os.path.join("W:\Audit\Coty\Invoice Images\ImageStagingBay\Superdrug",Invoice_No+'.pdf'))
                     except:
                         pass

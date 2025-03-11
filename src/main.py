@@ -12,4 +12,4 @@ InsertIntoSQL(df,'CL027','SUP01')
 print("Charges in SQL server table.")
 
 #For faster testing CSV to check the data in the dataframe
-df.to_csv('W:\Audit\Coty\Invoice Images\Superdrug111024.csv',index=False)
+df.to_csv('W:\Audit\Coty\Invoice Images\Superdrug24022025.csv',index=False)
